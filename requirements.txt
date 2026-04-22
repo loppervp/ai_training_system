@@ -1,0 +1,58 @@
+# AI Training System Requirements
+
+# Core
+pandas>=1.5.0
+numpy>=1.23.0
+python-dateutil>=2.8.0
+
+# Database
+sqlalchemy>=1.4.0
+psycopg2-binary>=2.9.0
+
+# ML
+scikit-learn>=1.1.0
+scipy>=1.9.0
+
+# Scheduling
+schedule>=1.1.0
+
+# Data formats
+pyarrow>=9.0.0
+openpyxl>=3.0.0
+
+# Logging
+colorlog>=6.7.0
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# MLOps
+mlflow>=2.8.0
+polars>=0.19.0
+prefect>=2.14.0
+fastapi>=0.104.0
+uvicorn>=0.24.0
+python-multipart>=0.0.6
+
+# Optional: Deep Learning (uncomment if needed)
+# torch>=1.12.0
+# tensorflow>=2.10.0
+
+# Optional: Advanced ML (uncomment if needed)
+# xgboost>=1.6.0
+# lightgbm>=3.3.0
+# prophet>=1.1.0
+
+# AI Chat - OpenAI (PINNED VERSIONS TO AVOID DEPENDENCY CONFLICTS)
+openai==1.14.0
+anthropic>=0.18.0
+langchain==0.1.13
+langchain-core==0.1.33
+langchain-openai==0.1.1
+langchain-experimental==0.0.54
+dataclasses-json==0.5.14
+urllib3==1.26.18
+python-dotenv>=1.0.0
+plotly>=5.18.0
+kaleido>=0.2.1

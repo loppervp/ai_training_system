@@ -1,0 +1,48 @@
+{
+  "_comment": "This is the SOURCE DATABASE configuration to extract data from scm_sal_main and scm_sal_data. Processed data will be saved to data/processed/",
+  
+  "source_database": {
+    "type": "postgresql",
+    "host": "${DB_HOST}",
+    "port": "${DB_PORT}",
+    "database": "${DB_NAME}",
+    "username": "${DB_USER}",
+    "password": "${DB_PASSWORD}",
+    "schema": "public",
+    "pool_size": "${DB_POOL_SIZE:-10}",
+    "max_overflow": "${DB_MAX_OVERFLOW:-20}",
+    "pool_timeout": "${DB_POOL_TIMEOUT:-30}",
+    "echo": "${DB_ECHO:-false}"
+  },
+  "_comment_env": "NOTE: All values above will be automatically OVERRIDDEN by environment variables from .env file if they exist. Default values in brackets will be used if env var is not set.",
+  
+  "tables": {
+    "scm_sal_main": {
+      "name": "scm_sal_main",
+      "description": "Main sales order table",
+      "primary_key": "uniquenum_pri"
+    },
+    "scm_sal_data": {
+      "name": "scm_sal_data",
+      "description": "Sales order detail table",
+      "primary_key": "uniquenum_uniq",
+      "foreign_key": "uniquenum_pri"
+    }
+  },
+  
+  "extraction_settings": {
+    "batch_size": 10000,
+    "max_workers": 4,
+    "chunk_size": 5000,
+    "date_format": "YYYY-MM-DD",
+    "timezone": "Asia/Ho_Chi_Minh"
+  },
+  
+  "filters": {
+    "default": {
+      "tag_void_yn": "n",
+      "companyfn": "${COOKCFNUNIQUE}"
+    },
+    "transaction_types": ["sal_soe", "sal_soc", "sal_inv", "sal_quo", "stk_do", "stk_doc"]
+  }
+}

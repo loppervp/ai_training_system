@@ -1,0 +1,539 @@
+{
+  "version": "1.0.0",
+  "description": "JSON Mapping configuration for AI Training System",
+  "last_updated": "2026-03-31",
+  
+  "database_tables": {
+    "scm_sal_main": {
+      "description": "Main table containing sales order information",
+      "primary_key": "idcode",
+      "columns": {
+        "idcode": {
+          "type": "integer",
+          "description": "Auto-increment primary key",
+          "ai_usage": "identifier"
+        },
+        "uniquenum_pri": {
+          "type": "string",
+          "description": "Unique primary key (business key)",
+          "ai_usage": "identifier"
+        },
+        "companyfn": {
+          "type": "string",
+          "description": "Company code",
+          "ai_usage": "filter"
+        },
+        "dnum_auto": {
+          "type": "string",
+          "description": "Auto-generated order number",
+          "ai_usage": "identifier"
+        },
+        "tag_table_usage": {
+          "type": "string",
+          "description": "Transaction type (sal_soe, sal_soc, sal_inv, sal_quo, etc.)",
+          "ai_usage": "category",
+          "mapping_values": {
+            "sal_soe": "Sales Order Entry",
+            "sal_soc": "Sales Order Confirmation",
+            "sal_inv": "Sales Invoice",
+            "sal_quo": "Sales Quotation",
+            "sal_cn": "Sales Credit Note",
+            "stk_do": "Delivery Order",
+            "stk_doc": "Delivery Order Confirmation"
+          }
+        },
+        "party_unique": {
+          "type": "string",
+          "description": "Unique customer ID",
+          "ai_usage": "customer_identifier"
+        },
+        "party_code": {
+          "type": "string",
+          "description": "Customer code",
+          "ai_usage": "customer_code"
+        },
+        "party_desc": {
+          "type": "string",
+          "description": "Customer name",
+          "ai_usage": "customer_name"
+        },
+        "date_trans": {
+          "type": "date",
+          "format": "YYYY-MM-DD",
+          "description": "Transaction date",
+          "ai_usage": "temporal_feature"
+        },
+        "date_due": {
+          "type": "date",
+          "format": "YYYY-MM-DD",
+          "description": "Due date",
+          "ai_usage": "temporal_feature"
+        },
+        "amount_local": {
+          "type": "decimal",
+          "description": "Local currency amount",
+          "ai_usage": "target_variable"
+        },
+        "amount_forex": {
+          "type": "decimal",
+          "description": "Foreign currency amount",
+          "ai_usage": "target_variable"
+        },
+        "curr_short_forex": {
+          "type": "string",
+          "description": "Currency symbol (VND, USD, etc.)",
+          "ai_usage": "currency"
+        },
+        "curr_rate_forex_f_calc": {
+          "type": "decimal",
+          "description": "Exchange rate",
+          "ai_usage": "exchange_rate"
+        },
+        "deptunit_code": {
+          "type": "string",
+          "description": "Business unit code",
+          "ai_usage": "business_unit"
+        },
+        "deptunit_desc": {
+          "type": "string",
+          "description": "Business unit name",
+          "ai_usage": "business_unit"
+        },
+        "staff_code": {
+          "type": "string",
+          "description": "Staff code",
+          "ai_usage": "salesperson"
+        },
+        "staff_unique": {
+          "type": "string",
+          "description": "Staff ID",
+          "ai_usage": "salesperson"
+        },
+        "location_code": {
+          "type": "string",
+          "description": "Warehouse/location code",
+          "ai_usage": "location"
+        },
+        "creditterm_desc": {
+          "type": "string",
+          "description": "Payment terms",
+          "ai_usage": "payment_terms"
+        },
+        "delivtype_desc": {
+          "type": "string",
+          "description": "Delivery type",
+          "ai_usage": "delivery_type"
+        },
+        "sendby_desc": {
+          "type": "string",
+          "description": "Shipping method",
+          "ai_usage": "shipping_method"
+        },
+        "notes_memo": {
+          "type": "string",
+          "description": "Notes",
+          "ai_usage": "text_feature"
+        },
+        "tag_void_yn": {
+          "type": "string",
+          "values": ["y", "n"],
+          "description": "Void flag",
+          "ai_usage": "filter"
+        },
+        "salestaxpct": {
+          "type": "decimal",
+          "description": "Tax percentage",
+          "ai_usage": "tax_rate"
+        }
+      }
+    },
+    
+    "scm_sal_data": {
+      "description": "Detail table containing line items in orders",
+      "primary_key": "idcode",
+      "foreign_key": "uniquenum_pri",
+      "columns": {
+        "idcode": {
+          "type": "integer",
+          "description": "Auto-increment primary key",
+          "ai_usage": "identifier"
+        },
+        "uniquenum_uniq": {
+          "type": "string",
+          "description": "Unique line item key (business key)",
+          "ai_usage": "identifier"
+        },
+        "uniquenum_pri": {
+          "type": "string",
+          "description": "Foreign key to scm_sal_main",
+          "ai_usage": "foreign_key"
+        },
+        "companyfn": {
+          "type": "string",
+          "description": "Company code",
+          "ai_usage": "filter"
+        },
+        "tag_table_usage": {
+          "type": "string",
+          "description": "Transaction type",
+          "ai_usage": "category"
+        },
+        "row_item_num": {
+          "type": "decimal",
+          "description": "Line item sequence number",
+          "ai_usage": "sequence"
+        },
+        "stkcode_code": {
+          "type": "string",
+          "description": "Product code",
+          "ai_usage": "product_code"
+        },
+        "stkcode_unique": {
+          "type": "string",
+          "description": "Product ID",
+          "ai_usage": "product_identifier"
+        },
+        "stkcode_desc": {
+          "type": "string",
+          "description": "Product name",
+          "ai_usage": "product_name"
+        },
+        "skucode_code": {
+          "type": "string",
+          "description": "SKU code",
+          "ai_usage": "sku"
+        },
+        "brand_code": {
+          "type": "string",
+          "description": "Brand code",
+          "ai_usage": "brand"
+        },
+        "brand_unique": {
+          "type": "string",
+          "description": "Brand ID",
+          "ai_usage": "brand"
+        },
+        "brand_desc": {
+          "type": "string",
+          "description": "Brand name",
+          "ai_usage": "brand"
+        },
+        "stkcate_code": {
+          "type": "string",
+          "description": "Product category code",
+          "ai_usage": "category"
+        },
+        "stkcate_unique": {
+          "type": "string",
+          "description": "Product category ID",
+          "ai_usage": "category"
+        },
+        "stkcate_desc": {
+          "type": "string",
+          "description": "Product category name",
+          "ai_usage": "category"
+        },
+        "stkvendor_code": {
+          "type": "string",
+          "description": "Product vendor code",
+          "ai_usage": "vendor"
+        },
+        "stkvendor_desc": {
+          "type": "string",
+          "description": "Product vendor name",
+          "ai_usage": "vendor"
+        },
+        "qnty_total": {
+          "type": "decimal",
+          "description": "Quantity",
+          "ai_usage": "quantity"
+        },
+        "qnty_uomstk": {
+          "type": "decimal",
+          "description": "Quantity in stock unit",
+          "ai_usage": "quantity"
+        },
+        "bal_qnty_total": {
+          "type": "decimal",
+          "description": "Remaining quantity",
+          "ai_usage": "balance_quantity"
+        },
+        "bal_qnty_uomstk": {
+          "type": "decimal",
+          "description": "Remaining quantity in stock unit",
+          "ai_usage": "balance_quantity"
+        },
+        "uom_stk_code": {
+          "type": "string",
+          "description": "Unit of measure",
+          "ai_usage": "unit_of_measure"
+        },
+        "price_unitlist_forex": {
+          "type": "decimal",
+          "description": "List price in foreign currency",
+          "ai_usage": "list_price"
+        },
+        "price_unitlist_local": {
+          "type": "decimal",
+          "description": "List price in local currency",
+          "ai_usage": "list_price"
+        },
+        "price_unitrate_forex": {
+          "type": "decimal",
+          "description": "Unit price in foreign currency",
+          "ai_usage": "unit_price"
+        },
+        "price_unitrate_local": {
+          "type": "decimal",
+          "description": "Unit price in local currency",
+          "ai_usage": "unit_price"
+        },
+        "discount_pct": {
+          "type": "decimal",
+          "description": "Discount percentage",
+          "ai_usage": "discount"
+        },
+        "amount_forex": {
+          "type": "decimal",
+          "description": "Line amount in foreign currency",
+          "ai_usage": "line_amount"
+        },
+        "amount_local": {
+          "type": "decimal",
+          "description": "Line amount in local currency",
+          "ai_usage": "line_amount"
+        },
+        "amount_tax_forex": {
+          "type": "decimal",
+          "description": "Tax amount in foreign currency",
+          "ai_usage": "tax_amount"
+        },
+        "amount_tax_local": {
+          "type": "decimal",
+          "description": "Tax amount in local currency",
+          "ai_usage": "tax_amount"
+        },
+        "gst_taxa_code": {
+          "type": "string",
+          "description": "Tax code",
+          "ai_usage": "tax_code"
+        },
+        "date_trans": {
+          "type": "date",
+          "format": "YYYY-MM-DD",
+          "description": "Transaction date",
+          "ai_usage": "temporal_feature"
+        },
+        "party_unique": {
+          "type": "string",
+          "description": "Customer ID",
+          "ai_usage": "customer_identifier"
+        },
+        "party_code": {
+          "type": "string",
+          "description": "Customer code",
+          "ai_usage": "customer_code"
+        },
+        "party_desc": {
+          "type": "string",
+          "description": "Customer name",
+          "ai_usage": "customer_name"
+        },
+        "staff_code": {
+          "type": "string",
+          "description": "Staff code",
+          "ai_usage": "salesperson"
+        },
+        "staff_unique": {
+          "type": "string",
+          "description": "Staff ID",
+          "ai_usage": "salesperson"
+        },
+        "deptunit_code": {
+          "type": "string",
+          "description": "Business unit code",
+          "ai_usage": "business_unit"
+        },
+        "location_code": {
+          "type": "string",
+          "description": "Warehouse code",
+          "ai_usage": "location"
+        },
+        "notes_memo": {
+          "type": "string",
+          "description": "Notes",
+          "ai_usage": "text_feature"
+        },
+        "tag_void_yn": {
+          "type": "string",
+          "values": ["y", "n"],
+          "description": "Void flag",
+          "ai_usage": "filter"
+        },
+        "tag_item_taxable_yn": {
+          "type": "string",
+          "values": ["y", "n"],
+          "description": "Taxable flag",
+          "ai_usage": "tax_flag"
+        },
+        "tag_closedmain_yn": {
+          "type": "string",
+          "description": "Closed flag",
+          "ai_usage": "status"
+        }
+      }
+    }
+  },
+  
+  "data_transformation": {
+    "customer_analysis": {
+      "description": "Data for customer analysis",
+      "source_tables": ["scm_sal_main", "scm_sal_data"],
+      "join_condition": "scm_sal_main.uniquenum_pri = scm_sal_data.uniquenum_pri",
+      "output_columns": [
+        "customer_id",
+        "customer_name",
+        "transaction_date",
+        "product_code",
+        "product_name",
+        "category",
+        "brand",
+        "quantity",
+        "unit_price",
+        "total_amount",
+        "transaction_type"
+      ],
+      "filters": {
+        "tag_void_yn": "n",
+        "tag_table_usage": ["sal_soe", "sal_soc", "sal_inv"]
+      }
+    },
+    
+    "product_analysis": {
+      "description": "Data for product analysis",
+      "source_tables": ["scm_sal_data"],
+      "output_columns": [
+        "product_code",
+        "product_name",
+        "category",
+        "brand",
+        "vendor",
+        "transaction_date",
+        "quantity_sold",
+        "revenue",
+        "avg_price"
+      ],
+      "filters": {
+        "tag_void_yn": "n"
+      }
+    },
+    
+    "sales_trend": {
+      "description": "Data for sales trend analysis",
+      "source_tables": ["scm_sal_main"],
+      "output_columns": [
+        "transaction_date",
+        "year",
+        "month",
+        "quarter",
+        "day_of_week",
+        "business_unit",
+        "salesperson",
+        "total_transactions",
+        "total_revenue",
+        "avg_transaction_value"
+      ],
+      "filters": {
+        "tag_void_yn": "n",
+        "tag_table_usage": ["sal_inv", "sal_soc"]
+      }
+    },
+    
+    "customer_retention": {
+      "description": "Data for customer retention analysis",
+      "source_tables": ["scm_sal_main"],
+      "output_columns": [
+        "customer_id",
+        "customer_name",
+        "first_purchase_date",
+        "last_purchase_date",
+        "days_since_last_purchase",
+        "total_purchases",
+        "total_spent",
+        "avg_purchase_value",
+        "purchase_frequency",
+        "customer_lifetime_days"
+      ],
+      "filters": {
+        "tag_void_yn": "n",
+        "tag_table_usage": ["sal_inv"]
+      }
+    }
+  },
+  
+  "feature_engineering": {
+    "temporal_features": {
+      "year": "EXTRACT(YEAR FROM date_trans)",
+      "month": "EXTRACT(MONTH FROM date_trans)",
+      "quarter": "EXTRACT(QUARTER FROM date_trans)",
+      "day_of_week": "EXTRACT(DOW FROM date_trans)",
+      "day_of_month": "EXTRACT(DAY FROM date_trans)",
+      "week_of_year": "EXTRACT(WEEK FROM date_trans)",
+      "is_weekend": "CASE WHEN EXTRACT(DOW FROM date_trans) IN (0,6) THEN 1 ELSE 0 END",
+      "is_month_end": "CASE WHEN EXTRACT(DAY FROM date_trans) >= 25 THEN 1 ELSE 0 END",
+      "is_quarter_end": "CASE WHEN EXTRACT(MONTH FROM date_trans) IN (3,6,9,12) AND EXTRACT(DAY FROM date_trans) >= 25 THEN 1 ELSE 0 END"
+    },
+    
+    "customer_features": {
+      "recency": "Days since last purchase",
+      "frequency": "Number of purchases in period",
+      "monetary": "Total amount spent",
+      "avg_order_value": "Average order value",
+      "unique_products": "Number of unique products purchased",
+      "favorite_category": "Most purchased category",
+      "favorite_brand": "Most purchased brand"
+    },
+    
+    "product_features": {
+      "total_quantity_sold": "Total quantity sold",
+      "total_revenue": "Total revenue generated",
+      "avg_selling_price": "Average selling price",
+      "unique_customers": "Number of unique customers",
+      "sales_velocity": "Sales per day",
+      "seasonality_index": "Seasonal pattern indicator"
+    }
+  },
+  
+  "ml_models": {
+    "customer_churn_prediction": {
+      "description": "Predict customer churn probability",
+      "algorithm": "RandomForestClassifier",
+      "features": ["recency", "frequency", "monetary", "avg_order_value", "days_since_last_purchase"],
+      "target": "is_churned",
+      "threshold_days": 90
+    },
+    
+    "sales_forecast": {
+      "description": "Predict sales revenue",
+      "algorithm": "Prophet",
+      "features": ["date_trans", "amount_local"],
+      "target": "future_sales",
+      "forecast_horizon": 30
+    },
+    
+    "product_recommendation": {
+      "description": "Recommend products to customers",
+      "algorithm": "CollaborativeFiltering",
+      "features": ["customer_id", "product_code", "quantity"],
+      "target": "purchase_probability"
+    },
+    
+    "customer_segmentation": {
+      "description": "Segment customers",
+      "algorithm": "KMeans",
+      "features": ["recency", "frequency", "monetary"],
+      "target": "customer_segment",
+      "n_clusters": 5
+    }
+  }
+}
