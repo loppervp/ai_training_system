@@ -35,7 +35,7 @@ AI_PROVIDERS = [
      {
         "name": "Ollama (cloud)",
         "base_url": "https://api.ollama.com/api/generate",  # ✅ Dùng /api/generate
-        "api_key": os.getenv('OLLAMA_API_KEY', '2d257bf6c51b4aada48275680752b585.PYmrtueCOkFE6KPAjLk-6fVw'),
+        "api_key": os.getenv('OLLAMA_API_KEY', ''),
         "model": "qwen3.5:cloud",
         "enabled": True,
         "working": True,
@@ -44,7 +44,7 @@ AI_PROVIDERS = [
     # 0. Claude (Anthropic) - ưu tiên 1 (chạy đầu tiên)
     {
         "name": "Claude (Anthropic)",
-        "api_key": os.getenv('ANTHROPIC_API_KEY', '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'),  # Lấy từ biến môi trường
+        "api_key": os.getenv('ANTHROPIC_API_KEY', ''),  # Lấy từ biến môi trường
         "model": "claude-haiku-4-5-20251001",
         "enabled": True,  # Bật nó lên!
         "working": True,
@@ -55,7 +55,7 @@ AI_PROVIDERS = [
     {
         "name": "OpenRouter",
         "base_url": "https://openrouter.ai/api/v1",
-        "api_key": os.getenv('OPENROUTER_API_KEY', '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'),
+        "api_key": os.getenv('OPENROUTER_API_KEY', ''),
         "model": "openrouter/free",
         "enabled": True,
         "working": True,
@@ -66,7 +66,7 @@ AI_PROVIDERS = [
     {
         "name": "Google Gemini",
         "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
-        "api_key": os.getenv('GEMINI_API_KEY', 'AIzaSyAV-jy6RTh1veM5paNZzkuX4Oto9sQBBh8'),
+        "api_key": os.getenv('GEMINI_API_KEY', ''),
         "model": "gemini-2.0-flash",
         "enabled": True,
         "working": True
