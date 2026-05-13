@@ -341,7 +341,7 @@ class PurchaseExtractor:
         date_to: Optional[str] = None
     ) -> pd.DataFrame:
         """
-        Extract data for vendor analysis (tương đương customer analysis bên sales)
+        Extract data for vendor analysis (same sales customer analysis)
 
         Returns:
             DataFrame with vendor analysis data
@@ -375,7 +375,7 @@ class PurchaseExtractor:
                     AND main.companyfn = data.companyfn
                 WHERE main.tag_void_yn = 'n'
                     AND data.tag_void_yn = 'n'
-                    AND main.tag_table_usage IN ('pur_po', 'pur_grn', 'pur_inv')
+                    AND main.tag_table_usage IN ('pur_po', 'pur_poc', 'pur_inv')
             """
 
             params = {}
@@ -433,7 +433,7 @@ class PurchaseExtractor:
                     COUNT(DISTINCT party_unique) as unique_vendors
                 FROM scm_pur_main
                 WHERE tag_void_yn = 'n'
-                    AND tag_table_usage IN ('pur_inv', 'pur_grn')
+                    AND tag_table_usage IN ('pur_inv', 'pur_poc')
             """
 
             params = {}
@@ -480,7 +480,7 @@ class PurchaseExtractor:
         date_to: Optional[str] = None
     ) -> pd.DataFrame:
         """
-        Extract monthly cost summary (tương đương extract_date_revenue_data bên sales)
+        Extract monthly cost summary (same as sales extract_date_revenue_data
 
         Returns:
             DataFrame with monthly cost data
@@ -494,7 +494,7 @@ class PurchaseExtractor:
                     SUM(amount_local) AS amt_local,
                     COUNT(DISTINCT uniquenum_pri) AS num_transactions
                 FROM scm_pur_main
-                WHERE tag_table_usage IN ('pur_inv', 'pur_grn')
+                WHERE (tag_table_usage = 'pur_poc' or (tag_table_usage = 'pur_po' and tag_closed02_yn = 'n'))
                 AND tag_void_yn = 'n'
             """
 
@@ -524,47 +524,6 @@ class PurchaseExtractor:
             logger.error(f"Error extracting purchase cost data: {str(e)}")
             raise
 
-    def get_available_date_range(self, companyfn: Optional[str] = None) -> Tuple[str, str]:
-        """
-        Lấy khoảng thời gian dữ liệu thực tế có sẵn trong scm_pur_main
-
-        Returns:
-            Tuple (min_date, max_date) dạng 'YYYY-MM-DD'
-        """
-        try:
-            query = """
-                SELECT
-                    MIN(date_trans) as min_date,
-                    MAX(date_trans) as max_date
-                FROM scm_pur_main
-                WHERE tag_void_yn = 'n'
-            """
-
-            params = {}
-            effective_companyfn = companyfn or self.companyfn
-            if effective_companyfn:
-                query += " AND companyfn = :companyfn"
-                params['companyfn'] = effective_companyfn
-
-            result = self.db_extractor.extract_data(query, params)
-
-            if len(result) == 0:
-                return ('2009-01-01', '2026-12-31')
-
-            min_date = result.iloc[0]['min_date'].strftime('%Y-%m-%d')
-            max_date = result.iloc[0]['max_date'].strftime('%Y-%m-%d')
-            return (min_date, max_date)
-
-        except Exception as e:
-            logger.error(f"Error getting purchase date range: {str(e)}")
-            return ('2009-01-01', '2026-12-31')
-
     def close(self):
         """Close connection"""
         self.db_extractor.close()
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
